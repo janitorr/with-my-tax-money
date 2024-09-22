@@ -1,6 +1,3 @@
 ﻿namespace WithMyTaxMoney.Domain;
 
-public class TaxExpenditure
-{
-
-}
+public class TaxExpenditure { }
