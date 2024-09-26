@@ -1,19 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WithMyTaxMoney.Domain.UnitTests;
 
 internal sealed class TaxExpenditureTests
 {
     [Test]
-    public async Task MyTest()
+    public async Task GivenDefaultInput_WhenCalledWithEmptyCategories_ReturnEmptyResult()
     {
-        var result = Add(1, 2);
-
-        await Assert.That(result).IsEqualTo(3);
-    }
-
-    private int Add(int x, int y)
-    {
-        return x + y;
+        var sut = new TaxExpenditure();
+        IEnumerable<decimal> result = sut.Calculate(0, []);
+        await Assert.That(result).IsNotNull();
     }
 }
