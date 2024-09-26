@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+using FluentAssertions;
 
 
 namespace WithMyTaxMoney.Domain.UnitTests;
@@ -8,34 +8,34 @@ namespace WithMyTaxMoney.Domain.UnitTests;
 internal sealed class TaxExpenditureTests
 {
     [Test]
-    public async Task GivenDefaultInput_WhenCalledWithEmptyCategories_ReturnEmptyResult()
+    public void GivenDefaultInput_WhenCalledWithEmptyCategories_ReturnEmptyResult()
     {
         var sut = new TaxExpenditure();
         IEnumerable<decimal> result = sut.Calculate(0, []);
-        await Assert.That(result).IsNotNull();
+        result.Should().NotBeNull();
+
     }
 
     [Test]
     [Arguments(10, 2, 5)]
     [Arguments(10, 5, 2)]
     [Arguments(10, 10, 1)]
-    public async Task GivenValidInput_WhenCalledWithOneCategory_CorrectBreakdown(
+    public void GivenValidInput_WhenCalledWithOneCategory_CorrectBreakdown(
         decimal testTax, decimal budgetCategory, decimal expected)
     {
         var sut = new TaxExpenditure();
         IEnumerable<decimal> result = sut.Calculate(testTax, [budgetCategory]);
-
-        await Assert.That(result).Contains(expected);
+        result.Should().NotBeNull().And.Contain(expected);
     }
 
     [Test]
     [MethodDataSource(typeof(MyTestDataSources), nameof(MyTestDataSources.SimpleTestData))]
-    public async Task GivenValidInput_WhenCalledWithOneCategory_CorrectBreakdown(AdditionTestData foo)
+    public void GivenValidInput_WhenCalledWithOneCategory_CorrectBreakdown(AdditionTestData testInput)
     {
         var sut = new TaxExpenditure();
-        IEnumerable<decimal> result = sut.Calculate(foo.TestTax, foo.BudgetCategories);
+        IEnumerable<decimal> result = sut.Calculate(testInput.TestTax, testInput.BudgetCategories);
 
-        await Assert.That(result).Contains(foo.Expected.First());
+        result.Should().Contain(testInput.TestTax);
     }
 
     internal sealed record AdditionTestData(decimal TestTax, List<decimal> BudgetCategories, List<decimal> Expected);
